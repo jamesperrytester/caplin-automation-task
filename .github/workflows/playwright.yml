@@ -40,6 +40,7 @@ jobs:
     strategy:
       matrix:
         browser: [chrome, firefox, webkit]
+      fail-fast: false
 
     steps:
     - uses: actions/checkout@v4
@@ -64,6 +65,7 @@ jobs:
         echo "- Tests: `${{ inputs.tests || 'All tests' }}`" >> $GITHUB_STEP_SUMMARY
 
     - name: Run Playwright tests
+      if: ${{ inputs.browser == 'all' || inputs.browser == matrix.browser }}
       run: |
         tests="${{ inputs.tests }}"
         tags="${{ inputs.tags }}"

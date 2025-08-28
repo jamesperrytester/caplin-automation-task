@@ -1,38 +1,61 @@
 import { test, expect } from "@playwright/test";
 
-test("Extract FTSE 100 constituents where market cap exceeds 7 million", async ({
+test("Extract FTSE 100 constituents with market cap > 7 million from pages 1–5", async ({
   page,
 }) => {
-  await page.goto(
-    "https://www.londonstockexchange.com/indices/ftse-100/constituents/table"
-  );
+  // Array to collect all results from all pages
+  const allResults: { name: string; marketCap: string }[] = [];
 
-  await page.waitForLoadState();
-  await expect(page).toHaveURL(/indices\/ftse-100\/constituents\/table/);
+  // Loop through pages 1 to 5
+  for (let i = 1; i <= 5; i++) {
+    // Use base URL for page 1, add ?page=2+ for others
+    const url =
+      i === 1
+        ? "https://www.londonstockexchange.com/indices/ftse-100/constituents/table"
+        : `https://www.londonstockexchange.com/indices/ftse-100/constituents/table?page=${i}`;
 
-  const highMarketCapConstituents = await page.evaluate(() => {
-    const rows = Array.from(document.querySelectorAll("table tbody tr"));
-    return rows
-      .map((row) => {
-        const cells = Array.from(row.querySelectorAll("td"));
-        const name = cells[1]?.innerText ?? "";
-        const marketCapText = cells[3]?.innerText ?? "";
+    // Navigate to the page and wait for it to load
+    await page.goto(url);
+    await page.waitForLoadState();
+    if (i === 1) {
+      await expect(page).toHaveURL("https://www.londonstockexchange.com/indices/ftse-100/constituents/table");
+    } else {
+      await expect(page).toHaveURL(`https://www.londonstockexchange.com/indices/ftse-100/constituents/table?page=${i}`);
+    }
 
-        // Convert market cap string to number (assumes value is in millions)
-        const marketCapValue = parseFloat(marketCapText.replace(/,/g, ""));
+    // Extract table rows and filter for market cap > 7 million
+    const pageResults = await page.evaluate(() => {
+      // Select all table rows
+      const rows = Array.from(document.querySelectorAll("table tbody tr"));
+      return rows
+        .map((row) => {
+          // Get all cells in the row
+          const cells = Array.from(row.querySelectorAll("td"));
+          // Extract name and market cap text
+          const name = cells[1]?.innerText ?? "";
+          const marketCapText = cells[3]?.innerText ?? "";
+          // Parse market cap value as a number (assumes millions)
+          const marketCapValue = parseFloat(marketCapText.replace(/,/g, ""));
 
-        return {
-          name,
-          marketCap: marketCapText,
-          marketCapValue,
-        };
-      })
-      .filter((item) => item.marketCapValue > 7000) // 7 million = 7000 in millions
-      .map(({ name, marketCap }) => ({ name, marketCap }));
-  });
+          return {
+            name,
+            marketCap: marketCapText,
+            marketCapValue,
+          };
+        })
+        // Only keep rows where market cap is over 7 million (7000 in millions)
+        .filter((item) => item.marketCapValue > 7000)
+        // Return only name and market cap for display
+        .map(({ name, marketCap }) => ({ name, marketCap }));
+    });
 
-  console.log("Constituents with Market Cap > 7 Million:");
-  highMarketCapConstituents.forEach(({ name, marketCap }) => {
+    // Add results from this page to the overall array
+    allResults.push(...pageResults);
+  }
+
+  // Log all matching constituents to the console
+  console.log("All FTSE 100 Constituents with Market Cap > 7 Million:");
+  allResults.forEach(({ name, marketCap }) => {
     console.log(`- ${name}: ${marketCap}`);
   });
 });

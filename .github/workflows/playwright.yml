@@ -9,7 +9,7 @@ on:
     inputs:
       env:
         description: "Environment (qa, stage, demo, live)"
-        required: true
+        required: false
       tests:
         description: "Tests to run (wrap in commas and separate tests with spaces)"
         required: false
@@ -28,7 +28,7 @@ on:
           - chrome
           - firefox
           - webkit
-          
+
   workflow_call:
     inputs:
       env:

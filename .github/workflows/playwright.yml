@@ -35,11 +35,11 @@ permissions:
 
 jobs:
   test:
-    timeout-minutes: 60
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     strategy:
       matrix:
-        browser: [chrome, firefox, webkit]
+        browser: ${{ fromJson(inputs.browser == 'all' && '["chrome", "firefox", "webkit"]' || format('["{0}"]', inputs.browser)) }}
       fail-fast: false
 
     steps:

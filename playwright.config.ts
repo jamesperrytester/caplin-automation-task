@@ -50,7 +50,7 @@ export default defineConfig({
     },
 
     {
-      name: "features-playwright-webkit",
+      name: "features-playwright-safari",
       use: { ...devices["Desktop Safari"] },
     },
 

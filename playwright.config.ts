@@ -45,7 +45,7 @@ export default defineConfig({
     },
 
     {
-      name: "features-playwright-safari",
+      name: "features-playwright-firefox",
       use: { ...devices["Desktop Firefox"] },
     },
 

@@ -1,4 +1,6 @@
-name: Playwright Tests
+name: Caplin Automation Task
+run-name: Caplin Automation Task, executed on ${{ inputs.tests != '' && format('({0}) ', inputs.tests) || '' }}on ${{ inputs.env }} environment ${{ inputs.tags != '' && format('for tags {0}', inputs.tags) || '' }} ${{ inputs.browser != '' && format('against {0}', inputs.browser) || '' }}
+
 on:
   push:
     branches: [ main, master ]

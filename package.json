@@ -21,5 +21,10 @@
   "devDependencies": {
     "@playwright/test": "^1.55.0",
     "@types/node": "^24.3.0"
+  },
+  "page": {
+    "on": {
+      "console": "msg => console.log(msg.text())"
+    }
   }
 }

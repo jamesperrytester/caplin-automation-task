@@ -90,3 +90,10 @@ The GitHub Actions YAML workflow was enhanced with the following capabilities:
 - **Manual dispatch support** via GitHub UI for flexible and on-demand test execution
 
 ---
+
+## 🛠️ Pipeline Run links:
+
+- all browsers - https://github.com/jamesperrytester/caplin-automation-task/actions/runs/17322577158
+- chrome - https://github.com/jamesperrytester/caplin-automation-task/actions/runs/17322645800
+- firefox - https://github.com/jamesperrytester/caplin-automation-task/actions/runs/17322573893
+- webkit - https://github.com/jamesperrytester/caplin-automation-task/actions/runs/17322575748

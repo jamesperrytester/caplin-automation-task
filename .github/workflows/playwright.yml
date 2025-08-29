@@ -1,5 +1,5 @@
 name: Caplin Automation Task Tests
-run-name: Caplin Automation Task Tests, executed ${{ inputs.tests != '' && format('({0}) ', inputs.tests) || '' }}on ${{ inputs.env }} environment  || '' }} ${{ inputs.browser != '' && format('against {0}', inputs.browser) || '' }}
+run-name: Caplin Automation Task Tests${{ inputs.tests != '' && format(' ({0})', inputs.tests) || '' }} on ${{ inputs.env }} environment${{ inputs.browser != '' && format(' against {0}', inputs.browser) || '' }}
 
 on:
   pull_request:

@@ -1,5 +1,5 @@
 name: Caplin Automation Task Tests
-run-name: Caplin Automation Task Tests, executed ${{ inputs.tests != '' && format('({0}) ', inputs.tests) || '' }}on ${{ inputs.env }} environment ${{ inputs.tags != '' && format('for tags {0}', inputs.tags) || '' }} ${{ inputs.browser != '' && format('against {0}', inputs.browser) || '' }}
+run-name: Caplin Automation Task Tests, executed ${{ inputs.tests != '' && format('({0}) ', inputs.tests) || '' }}on ${{ inputs.env }} environment  || '' }} ${{ inputs.browser != '' && format('against {0}', inputs.browser) || '' }}
 
 on:
   pull_request:
@@ -12,10 +12,6 @@ on:
         required: false
       tests:
         description: "Tests to run (wrap in commas and separate tests with spaces)"
-        required: false
-        default: ""
-      tags:
-        description: "Tags to run (e.g., @critical)"
         required: false
         default: ""
       browser:
@@ -61,14 +57,12 @@ jobs:
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "- Environment: `${{ inputs.env || 'Not specified' }}`" >> $GITHUB_STEP_SUMMARY
         echo "- Browser: `${{ matrix.browser }}`" >> $GITHUB_STEP_SUMMARY
-        echo "- Tags: `${{ inputs.tags || 'None' }}`" >> $GITHUB_STEP_SUMMARY
         echo "- Tests: `${{ inputs.tests || 'All tests' }}`" >> $GITHUB_STEP_SUMMARY
 
     - name: Run Playwright tests
       if: ${{ inputs.browser == 'all' || inputs.browser == matrix.browser }}
       run: |
         tests="${{ inputs.tests }}"
-        tags="${{ inputs.tags }}"
         browser="${{ matrix.browser }}"
 
         declare -A browser_map=(
@@ -88,17 +82,12 @@ jobs:
           cmd+=(--project="$project")
         fi
 
-        if [ -n "$tags" ]; then
-          cmd+=(--grep "$tags")
-        fi
-
         echo "Command: ${cmd[*]}"
         "${cmd[@]}"
       env:
         ENV: ${{ inputs.env }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BROWSER: ${{ matrix.browser }}
-        INPUT_TAGS: ${{ inputs.tags }}
         PLAYWRIGHT_JSON_OUTPUT_NAME: summary.json
 
     - uses: actions/upload-artifact@v4

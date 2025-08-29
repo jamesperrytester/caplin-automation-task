@@ -8,26 +8,24 @@ to ensure all dependencies are installed.
 
 ## Running Tests from PowerShell
 
-To run all Playwright tests on all browsers (default), you can choose one of the following options:
+To run all Playwright tests on all browsers, headless (default), you can run:
 
     npm run test
-    npm run test:all
-    npm run test:all:allbrowsers
 
-To run all tests on a specific browser:
+To run all Playwright tests on a specific browser, in UI mode, you can run:
 
-    npm run test:all:chromium   # Run all tests on Chromium
-    npm run test:all:firefox    # Run all tests on Firefox
-    npm run test:all:webkit     # Run all tests on WebKit
+    npm run test:all:chromium:ui   # Run all tests on Chromium
+    npm run test:all:firefox:ui    # Run all tests on Firefox
+    npm run test:all:webkit:ui     # Run all tests on WebKit
 
-To run an individual scenario, on all browsers:
+To run an individual scenario, on all browsers, in UI mode, you can run:
 
-    npm run test:scenario1      # Navigate to site
-    npm run test:scenario2      # Top 10 highest % change
-    npm run test:scenario3      # Top 10 lowest % change
-    npm run test:scenario4      # Market cap > 7 million
+    npm run test:scenario1:ui      # Navigate to site
+    npm run test:scenario2:ui      # Top 10 highest % change
+    npm run test:scenario3:ui      # Top 10 lowest % change
+    npm run test:scenario4:ui      # Market cap > 7 million
 
-Run these commands in your PowerShell terminal from the project directory to execute the tests as needed.
+Run these commands in your PowerShell / Npm terminal from the project directory to execute the tests as needed.
 
 ## CI/CD - yaml file
 
